@@ -1,7 +1,6 @@
+"use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
-("use client");
 
 export default function SplashPage() {
   const router = useRouter();

@@ -41,7 +41,7 @@ export default function Home() {
   }, [isMapScriptLoaded]);
 
   // bottomsheet
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpenChange } = useDisclosure();
 
   return (
     <>

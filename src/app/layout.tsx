@@ -29,7 +29,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Script
-          src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=%NAVER_CLIENT_ID%"
+          src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}`}
           strategy="beforeInteractive"
         />
         {children}

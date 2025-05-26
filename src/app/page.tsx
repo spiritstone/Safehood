@@ -2,6 +2,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from "@heroui/modal";
+import { Button } from "@heroui/button";
 
 export default function Home() {
   const router = useRouter();
@@ -31,6 +40,9 @@ export default function Home() {
     }
   }, [isMapScriptLoaded]);
 
+  // bottomsheet
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <>
       {/* 네이버 지도 API Script 로딩 */}
@@ -39,7 +51,47 @@ export default function Home() {
         strategy="afterInteractive"
         onLoad={() => setIsMapScriptLoaded(true)}
       />
-      <div ref={mapContainerRef} id="map" className="w-full h-screen" />
+      <div>
+        <div ref={mapContainerRef} id="map" className="w-full h-screen"></div>
+        <div className="fixed bottom-0 z-50 bg-white w-full h-20">
+          <div className="px-4 pt-4 text-black">Safehood</div>
+          <Modal
+            isOpen={isOpen}
+            placement={"bottom"}
+            onOpenChange={onOpenChange}
+          >
+            <ModalContent>
+              {(onClose) => (
+                <>
+                  <ModalHeader className="flex flex-col gap-1">
+                    Modal Safehood
+                  </ModalHeader>
+                  <ModalBody>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Nullam pulvinar risus non risus hendrerit venenatis.
+                      Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                    </p>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Nullam pulvinar risus non risus hendrerit venenatis.
+                      Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                    </p>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="danger" variant="light" onPress={onClose}>
+                      Close
+                    </Button>
+                    <Button color="primary" onPress={onClose}>
+                      Action
+                    </Button>
+                  </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
+        </div>
+      </div>
     </>
   );
 }

@@ -11,12 +11,12 @@ import {
   useDisclosure,
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isMapScriptLoaded, setIsMapScriptLoaded] = useState(false);
-
   // splash 리디렉션
   useEffect(() => {
     if (typeof window !== "undefined" && !sessionStorage.getItem("visited")) {
@@ -41,24 +41,37 @@ export default function Home() {
   }, [isMapScriptLoaded]);
 
   // bottomsheet
-  const { isOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  // const { onOpenChange } = useDisclosure();
 
   return (
     <>
       {/* 네이버 지도 API Script 로딩 */}
       <Script
-        src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}`}
+        src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}`}
         strategy="afterInteractive"
         onLoad={() => setIsMapScriptLoaded(true)}
       />
       <div>
         <div ref={mapContainerRef} id="map" className="w-full h-screen"></div>
-        <div className="fixed bottom-0 z-50 bg-white w-full h-20">
-          <div className="px-4 pt-4 text-black">Safehood</div>
+        <div className="fixed bottom-0 z-50 bg-white w-full h-80 rounded-t-lg">
+          <Button
+            className="max-w-fit px-4 pt-4 text-black flex flex-row gap-2"
+            onPress={onOpen}
+          >
+            <Image
+              src="/safehood_icon_small.png"
+              alt="Safehood"
+              width={20}
+              height={20}
+            />
+            Safehood
+          </Button>
           <Modal
             isOpen={isOpen}
             placement={"bottom"}
             onOpenChange={onOpenChange}
+            // size={"full"}
           >
             <ModalContent>
               {(onClose) => (

@@ -1,12 +1,15 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Script from "next/script";
 
 export default function Home() {
   const router = useRouter();
-  const mapRef = useRef<naver.maps.Map | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [isMapScriptLoaded, setIsMapScriptLoaded] = useState(false);
 
+  // splash 리디렉션
   useEffect(() => {
     if (typeof window !== "undefined" && !sessionStorage.getItem("visited")) {
       sessionStorage.setItem("visited", "true");
@@ -14,25 +17,30 @@ export default function Home() {
     }
   }, [router]);
 
-  //지도를 삽입할 HTML 요소 또는 HTML 요소의 id를 지정합니다.
-  var mapDiv = document.getElementById("map"); // 'map'으로 선언해도 동일
+  // 지도 초기화
+  useEffect(() => {
+    if (
+      isMapScriptLoaded &&
+      typeof window !== "undefined" &&
+      window.naver &&
+      mapContainerRef.current
+    ) {
+      new window.naver.maps.Map(mapContainerRef.current, {
+        center: new window.naver.maps.LatLng(37.5665, 126.978),
+        zoom: 16,
+      });
+    }
+  }, [isMapScriptLoaded]);
 
-  //옵션 없이 지도 객체를 생성하면 서울 시청을 중심으로 하는 16 레벨의 지도가 생성됩니다.
-  var map = new naver.maps.Map(mapDiv!);
   return (
-    <div
-      id="map"
-      className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]"
-    >
-      {/* <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          src="/safehood_icon.png"
-          alt="Safehood"
-          width={180}
-          height={180}
-          priority
-        />
-      </main> */}
-    </div>
+    <>
+      {/* 네이버 지도 API Script 로딩 */}
+      <Script
+        src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}`}
+        strategy="afterInteractive"
+        onLoad={() => setIsMapScriptLoaded(true)}
+      />
+      <div ref={mapContainerRef} id="map" className="w-full h-screen" />
+    </>
   );
 }

@@ -48,7 +48,8 @@ export default function Home() {
     <>
       {/* 네이버 지도 API Script 로딩 */}
       <Script
-        src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}`}
+        src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}`}
+        type="text/javascript"
         strategy="afterInteractive"
         onLoad={() => setIsMapScriptLoaded(true)}
       />
@@ -57,8 +58,7 @@ export default function Home() {
         <div className="fixed bottom-0 z-50 bg-white w-full h-80 rounded-t-lg">
           <Button
             className="max-w-fit px-4 pt-4 text-black flex flex-row gap-2"
-            onPress={onOpen}
-          >
+            onPress={onOpen}>
             <Image
               src="/safehood_icon_small.png"
               alt="Safehood"

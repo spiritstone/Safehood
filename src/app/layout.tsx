@@ -26,12 +26,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Script
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* <Script
           src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}`}
           strategy="beforeInteractive"
-        />
+        /> */}
         {children}
       </body>
     </html>
